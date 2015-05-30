@@ -67,6 +67,11 @@ brew_install_or_upgrade() {
   fi
 }
 
+brewcask_install() {
+    fancy_echo "Installing %s ..." "$1"
+    brew cask install "$@"
+}
+
 brew_is_installed() {
   local name="$(brew_expand_alias "$1")"
 
@@ -130,57 +135,40 @@ fi
 
 fancy_echo "Updating Homebrew formulas ..."
 brew update
+fancy_echo "tap homebrew cask ..."
+brew install caskroom/cask/brew-cask
+fancy_echo "tap homebrew cask alternative version ..."
+brew_tap "caskroom/versions"
+fancy_echo "tap homebrew php ..."
+brew_tap "homebrew/php"
 
 brew_install_or_upgrade 'git'
-brew_install_or_upgrade 'postgres'
-brew_launchctl_restart 'postgresql'
-brew_install_or_upgrade 'redis'
-brew_launchctl_restart 'redis'
-brew_install_or_upgrade 'the_silver_searcher'
-brew_install_or_upgrade 'vim'
-brew_install_or_upgrade 'ctags'
-brew_install_or_upgrade 'tmux'
-brew_install_or_upgrade 'reattach-to-user-namespace'
-brew_install_or_upgrade 'imagemagick'
-brew_install_or_upgrade 'qt'
-brew_install_or_upgrade 'hub'
-brew_install_or_upgrade 'node'
+brew_install_or_upgrade 'mysql'
+brew_install_or_upgrade 'nginx'
+brew_install_or_upgrade 'nginx'
+brew_install_or_upgrade 'memcached'
+brew_install_or_upgrade 'php55'
+brew_install_or_upgrade 'php55-mcrypt'
+brew_install_or_upgrade 'php55-memcached'
 
-brew_install_or_upgrade 'rbenv'
-brew_install_or_upgrade 'ruby-build'
+brewcask_install 'google-chrome'
+brewcask_install 'iterm2'
+brewcask_install 'sequel-pro'
+brewcask_install 'sublime-text3'
 
-# shellcheck disable=SC2016
-append_to_zshrc 'eval "$(rbenv init - --no-rehash zsh)"' 1
+fancy_echo "Setup sublime text ..."
+fancy_echo "Enable repeat keys in sublime text ..."
+defaults write com.sublimetext.3 ApplePressAndHoldEnabled -bool false
+fancy_echo "Please check following url to install packagecontrol plugin for sublime text"
+fancy_echo "https://packagecontrol.io/installation"
 
-brew_install_or_upgrade 'openssl'
-brew unlink openssl && brew link openssl --force
-brew_install_or_upgrade 'libyaml'
+fancy_echo "Install php composer ..."
+curl -sS https://getcomposer.org/installer | php
+mv composer.phar /usr/local/bin/composer
 
-ruby_version="$(curl -sSL http://ruby.thoughtbot.com/latest)"
 
-eval "$(rbenv init - zsh)"
-
-if ! rbenv versions | grep -Fq "$ruby_version"; then
-  rbenv install -s "$ruby_version"
-fi
-
-rbenv global "$ruby_version"
-rbenv shell "$ruby_version"
-
-gem update --system
-
-gem_install_or_update 'bundler'
-
-fancy_echo "Configuring Bundler ..."
-  number_of_cores=$(sysctl -n hw.ncpu)
-  bundle config --global jobs $((number_of_cores - 1))
-
-brew_install_or_upgrade 'heroku-toolbelt'
-
-if ! command -v rcup >/dev/null; then
-  brew_tap 'thoughtbot/formulae'
-  brew_install_or_upgrade 'rcm'
-fi
+fancy_echo "Installing oh-my-zsh"
+curl -L https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh | sh
 
 if [ -f "$HOME/.laptop.local" ]; then
   . "$HOME/.laptop.local"
