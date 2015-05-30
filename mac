@@ -145,7 +145,6 @@ brew_tap "homebrew/php"
 brew_install_or_upgrade 'git'
 brew_install_or_upgrade 'mysql'
 brew_install_or_upgrade 'nginx'
-brew_install_or_upgrade 'nginx'
 brew_install_or_upgrade 'memcached'
 brew_install_or_upgrade 'php55'
 brew_install_or_upgrade 'php55-mcrypt'
