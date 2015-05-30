@@ -43,6 +43,7 @@ What it sets up
 
 * [homebrew] The missing package manager for OS X. http://brew.sh
 * [homebrew cask] Extend Homebrew to install OS X applications and large binaries. http://caskroom.io
+* [homebrew php] PHP formulae repo for Homebrew
 * [git]
 * [mysql]
 * [nginx]
