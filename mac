@@ -149,6 +149,7 @@ brew_install_or_upgrade 'memcached'
 brew_install_or_upgrade 'php55'
 brew_install_or_upgrade 'php55-mcrypt'
 brew_install_or_upgrade 'php55-memcached'
+brew_install_or_upgrade 'nvm'
 
 brewcask_install 'google-chrome'
 brewcask_install 'iterm2'
@@ -165,9 +166,12 @@ fancy_echo "Install php composer ..."
 curl -sS https://getcomposer.org/installer | php
 mv composer.phar /usr/local/bin/composer
 
-
 fancy_echo "Installing oh-my-zsh"
 curl -L https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh | sh
+
+fancy_echo "Installing node js"
+. ~/.nvm/nvm.sh
+NVM_NODEJS_ORG_MIRROR=http://npm.taobao.org/mirrors/node nvm install stable
 
 if [ -f "$HOME/.laptop.local" ]; then
   . "$HOME/.laptop.local"
